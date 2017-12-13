@@ -50,13 +50,15 @@
     var selected = select.options[select.selectedIndex];
     var key = selected.value;
     var label = selected.textContent;
+    if(!app.selectedCities) {
+      app.selectedCities = [];
+    }
     // TODO init the app.selectedCities array here
     app.getForecast(key, label);
+
     // TODO push the selected city to the array and save here
-    app.saveSelectedCities = function() {
-      var selectedCities = JSON.stringify(app.selectedCities);
-      localStorage.selectedCities = selectedCities;
-    }
+    app.selectedCities.push({key: key, label: label});
+    app.saveSelectedCities();
 
     app.toggleAddDialog(false);
   });
@@ -202,6 +204,12 @@
   };
 
   // TODO add saveSelectedCities function here
+  // Save list of cities to localStorage.
+  app.saveSelectedCities = function() {
+    var selectedCities = JSON.stringify(app.selectedCities);
+    localStorage.selectedCities = selectedCities;
+  }
+
 
   app.getIconClass = function(weatherCode) {
     // Weather codes: https://developer.yahoo.com/weather/documentation.html#codes
